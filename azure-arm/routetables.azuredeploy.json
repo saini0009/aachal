@@ -1,0 +1,28 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subnet": { "type": "object" },
+        "routes": { "type": "array" }
+    },
+    "variables": {
+        "udrName": "[concat(parameters('subnet').name, '-udr')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/routeTables",
+            "name": "[variables('udrName')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "routes": "[parameters('routes')]"
+            }
+        }
+    ],
+    "outputs": {
+        "resourceID": {
+        "type": "string",
+            "value": "[resourceId('Microsoft.Network/routeTables', variables('udrName'))]"
+        }
+    }
+}
